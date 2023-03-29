@@ -8,7 +8,6 @@ class Point {
         this.x = x;
         this.y = y;
     }
-    // TODO: make equals(p: Point)
     equals(p: Point): boolean {
         return this.x === p.x && this.y === p.y;
     }
@@ -17,15 +16,14 @@ class Point {
 class Line {
     start: Point;
     end: Point;
-    type: string | null = '#e6ecee';
     constructor(start: Point, end: Point) {
         this.start = start;
         this.end = end;
     }
 }
 
-const gridSizeX = 6;
-const gridSizeY = 6;
+const gridSizeX = 4;
+const gridSizeY = 4;
 const gridCellSize = 100;
 
 const pointRadius = 15;
@@ -56,6 +54,8 @@ for (const point of points) {
     }
 }
 console.log(lines);
+
+const moves = [];
 
 function findNearestPoint(x: number, y: number) {
     return new Point(Math.abs(Math.round(x)), Math.abs(Math.round(y)));
@@ -110,7 +110,12 @@ function handleClick(event) {
     // TODO: is it valid to click the point?
 
     // TODO: add line to clicks for active player
-    clickedLine.type = 'lightblue';
+
+    moves.push({
+        line: clickedLine,
+    });
+
+    console.log(moves);
 
     // redraw grid and recalculate score
     drawGrid();
@@ -152,7 +157,13 @@ function drawGrid() {
             offset + line.end.y * gridCellSize
         );
         context.lineWidth = lineWidth;
-        context.strokeStyle = line.type ? line.type : 'red';
+
+        let strokeStyle = '#e6ecee';
+        const move = moves.find((m) => m.line == line);
+        if (move) {
+            strokeStyle = 'red';
+        }
+        context.strokeStyle = strokeStyle;
         context.stroke();
     });
 
@@ -173,3 +184,23 @@ function drawGrid() {
 }
 
 drawGrid();
+
+const buttonUndo = document.createElement('button');
+buttonUndo.innerHTML = 'Undo';
+buttonUndo.setAttribute('id', 'buttonUndo');
+document.body.append(buttonUndo);
+
+function undo() {
+    moves.pop();
+    drawGrid();
+}
+
+buttonUndo.addEventListener('click', undo);
+
+document.addEventListener('keydown', function (event) {
+    console.log(event);
+    if ((event.metaKey || event.ctrlKey) && event.key === 'z') {
+        event.stopImmediatePropagation();
+        undo();
+    }
+});

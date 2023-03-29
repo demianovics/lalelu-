@@ -11,3 +11,9 @@ canvas {
     display: block;
     margin: auto;
 }
+
+#buttonUndo {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
