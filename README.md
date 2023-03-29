@@ -1,3 +1,3 @@
-# lalelu-
+# lalelu²
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/typescript-1fyye1)
+The player who takes the most boxes wins.
