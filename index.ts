@@ -9,8 +9,8 @@ class Point {
         this.y = y;
     }
     // TODO: make equals(p: Point)
-    toCmp(): string {
-        return `${this.x}-${this.y}`;
+    equals(p: Point): boolean {
+        return this.x === p.x && this.y === p.y;
     }
 }
 
@@ -28,7 +28,7 @@ const gridSizeX = 6;
 const gridSizeY = 6;
 const gridCellSize = 100;
 
-const pointRadius = 14;
+const pointRadius = 15;
 const lineWidth = 20;
 const offset = pointRadius * 2;
 
@@ -98,10 +98,8 @@ function handleClick(event) {
     // find the line between both points
     const clickedLine = lines.find(
         (line) =>
-            (line.start.toCmp() == nearestPoint.toCmp() &&
-                line.end.toCmp() == nextPoint.toCmp()) ||
-            (line.end.toCmp() == nearestPoint.toCmp() &&
-                line.start.toCmp() == nextPoint.toCmp())
+            (line.start.equals(nearestPoint) && line.end.equals(nextPoint)) ||
+            (line.end.equals(nearestPoint) && line.start.equals(nextPoint))
     );
     console.log('clickedLine', clickedLine);
 
